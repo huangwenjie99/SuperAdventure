@@ -260,7 +260,7 @@ namespace SuperAdventure
                 if (inventoryItem.Details is Weapon)
                 {
                     if (inventoryItem.Quantity > 0)
-                    {
+                    {   //(Weapon): 这是一个类型转换操作符，将 inventoryItem.Details 强制转换为 Weapon 类型。
                         weapons.Add((Weapon)inventoryItem.Details);
                     }
                 }
@@ -270,15 +270,30 @@ namespace SuperAdventure
             {
                 // The player doesn't have any weapons, so hide the weapon combobox and "Use" button
                 cboWeapons.Visible = false;
-                btnUseWeapon.Visible = false;
+                btnUseWeapon.Visible = false; 
             }
             else
-            {
+            { 
+                //取消注册 cboWeapons 控件的 SelectedIndexChanged 事件处理程序cboWeapons_SelectedIndexChanged
+                //SelectedIndexChanged 方法是一个事件处理程序，用于响应下拉列表控件的选择索引发生变化的事件。
+                cboWeapons.SelectedIndexChanged -= cboWeapons_SelectedIndexChanged;
+                // weapons 集合设置为 cboWeapons 控件的数据源
                 cboWeapons.DataSource = weapons;
+                //注册 cboWeapons 控件的 SelectedIndexChanged 事件处理程序 cboWeapons_SelectedIndexChanged
+                cboWeapons.SelectedIndexChanged += cboWeapons_SelectedIndexChanged;
+                //设置 cboWeapons 控件的显示成员
                 cboWeapons.DisplayMember = "Name";
+                //将 "ID" 设置为要在 cboWeapons 控件中作为每个武器的值的属性或字段的名称
                 cboWeapons.ValueMember = "ID";
 
-                cboWeapons.SelectedIndex = 0;
+                if (_player.CurrentWeapon != null)
+                {
+                    cboWeapons.SelectedItem = _player.CurrentWeapon;
+                }
+                else
+                {   //没有武器，默认选择第一个武器
+                    cboWeapons.SelectedIndex = 0;
+                }
             }
         }
 
@@ -485,6 +500,14 @@ namespace SuperAdventure
         private void SuperAdventure_FormClosing(object sender, FormClosingEventArgs e)
         {
             File.WriteAllText(PLAYER_DATA_FILE_NAME, _player.ToXmlString());
+        }
+        //select
+        private void cboWeapons_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            //“cboWeapons.SelectedItem”前面有“（weapon）”。
+            //这是因为下拉列表可以包含不同类型的对象，而 cboWeapons.SelectedItem 可以是任何数据类型。
+            //通过在它前面添加“（Weapon）”，我们正在将其“投射”到 Weapon 数据类型中。
+            _player.CurrentWeapon = (Weapon)cboWeapons.SelectedItem;
         }
     }
 }

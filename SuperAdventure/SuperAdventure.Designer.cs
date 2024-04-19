@@ -137,6 +137,7 @@
             this.cboWeapons.Name = "cboWeapons";
             this.cboWeapons.Size = new System.Drawing.Size(121, 20);
             this.cboWeapons.TabIndex = 9;
+            this.cboWeapons.SelectedIndexChanged += new System.EventHandler(this.cboWeapons_SelectedIndexChanged);
             // 
             // cboPotions
             // 

@@ -13,7 +13,7 @@ namespace Engine
         public static readonly List<Quest> Quests = new List<Quest>();
         public static readonly List<Location> Locations = new List<Location>();
 
-        public const int ITEM_ID_RUSTY_SWORD = 1;
+        public const int ITEM_ID_RUSTY_SWORD = 1;//生锈的剑
         public const int ITEM_ID_RAT_TAIL = 2;
         public const int ITEM_ID_PIECE_OF_FUR = 3;
         public const int ITEM_ID_SNAKE_FANG = 4;
@@ -23,6 +23,8 @@ namespace Engine
         public const int ITEM_ID_SPIDER_FANG = 8;
         public const int ITEM_ID_SPIDER_SILK = 9;
         public const int ITEM_ID_ADVENTURER_PASS = 10;
+        public const int ITEM_ID_GUN = 11;
+
 
         public const int MONSTER_ID_RAT = 1;
         public const int MONSTER_ID_SNAKE = 2;
@@ -61,6 +63,7 @@ namespace Engine
             Items.Add(new Item(ITEM_ID_SPIDER_FANG, "Spider fang", "Spider fangs"));
             Items.Add(new Item(ITEM_ID_SPIDER_SILK, "Spider silk", "Spider silks"));
             Items.Add(new Item(ITEM_ID_ADVENTURER_PASS, "Adventurer pass", "Adventurer passes"));
+            Items.Add(new Weapon(ITEM_ID_GUN, "Gun", "Guns", 10, 20));
         }
 
         private static void PopulateMonsters()
@@ -88,11 +91,12 @@ namespace Engine
                 new Quest(
                     QUEST_ID_CLEAR_ALCHEMIST_GARDEN,
                     "Clear the alchemist's garden",
-                    "Kill rats in the alchemist's garden and bring back 3 rat tails. You will receive a healing potion and 10 gold pieces.", 20, 10);
+                    "Kill rats in the alchemist's garden and bring back 3 rat tails. You will receive a healing potion and 10 gold pieces and a gun.", 20, 10);
 
             clearAlchemistGarden.QuestCompletionItems.Add(new QuestCompletionItem(ItemByID(ITEM_ID_RAT_TAIL), 3));
 
             clearAlchemistGarden.RewardItem = ItemByID(ITEM_ID_HEALING_POTION);
+            clearAlchemistGarden.RewardItem = ItemByID(ITEM_ID_GUN);
 
             Quest clearFarmersField =
                 new Quest(
