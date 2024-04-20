@@ -10,7 +10,7 @@ namespace Engine
     public class Player : LivingCreature
     {
         public int Gold { get; set; }
-        public int ExperiencePoints { get; set; }
+        public int ExperiencePoints { get; private set; }
         //public int Level { get; set; }
         public int Level
         {
@@ -93,6 +93,13 @@ namespace Engine
                 return Player.CreateDefaultPlayer();
             }
         }
+        //增加经验值
+        public void AddExperiencePoints(int experiencePointsToAdd)
+        {
+            ExperiencePoints += experiencePointsToAdd;
+            MaximumHitPoints = (Level * 10);
+        }
+        当玩家获得等级时增加最大生命值
 
         public bool HasRequiredItemToEnterThisLocation(Location location)
         {
@@ -240,6 +247,7 @@ namespace Engine
         //    </PlayerQuests>
         //  </Player>
         public string ToXmlString()
+
         {
             XmlDocument playerData = new XmlDocument();
 
