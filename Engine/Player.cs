@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -37,16 +38,16 @@ namespace Engine
         }
         public Location CurrentLocation { get; set; }
         public Weapon CurrentWeapon { get; set; }
-        public List<InventoryItem> Inventory { get; set; }
-        public List<PlayerQuest> Quests { get; set; }
+        public BindingList<InventoryItem> Inventory { get; set; }
+        public BindingList<PlayerQuest> Quests { get; set; }
 
         //因为有其他2种方法来创建Player对象，因此设置成private（这意味着它只能由 Player 类中的另一个函数调用）
         private Player(int currentHitPoints, int maximumHitPoints, int gold, int experiencePoints) : base(currentHitPoints, maximumHitPoints)
         {
             Gold = gold;
             ExperiencePoints = experiencePoints;
-            Inventory = new List<InventoryItem>();
-            Quests = new List<PlayerQuest>();
+            Inventory = new BindingList<InventoryItem>();
+            Quests = new BindingList<PlayerQuest>();
         }
         //如果没有存档，创建一个新角色
         public static Player CreateDefaultPlayer()
@@ -129,7 +130,7 @@ namespace Engine
             }
 
             // See if the player has the required item in their inventory
-            return Inventory.Exists(ii => ii.Details.ID == location.ItemRequiredToEnter.ID);
+            return Inventory.Any(ii => ii.Details.ID == location.ItemRequiredToEnter.ID);
 
         }
 
@@ -173,7 +174,7 @@ namespace Engine
             foreach (QuestCompletionItem qci in quest.QuestCompletionItems)
             {
                 // Check each item in the player's inventory, to see if they have it, and enough of it
-                if (!Inventory.Exists(ii => ii.Details.ID == qci.Details.ID && ii.Quantity >= qci.Quantity))
+                if (!Inventory.Any(ii => ii.Details.ID == qci.Details.ID && ii.Quantity >= qci.Quantity))
                 {
                     return false;
                 }
